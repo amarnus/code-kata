@@ -1,37 +1,54 @@
 #!/usr/bin/env node
 
-var Product = function(name, total, price) {
+var Product = function(name, price) {
 	this.name = name;
-	this.total = total;
 	this.price = price;
-	this.soldByOffer = {};
+	this.inventory = [];
+	this._id = 1;
+	this.lastSoldId = -1;
+	return this;
+};
+
+Product.prototype.addItem = function(item) {
+	this.inventory.push(item);
+	return this;
+};
+
+Product.prototype.getItem = function() {
+	var key = this.lastSoldId++ + 1;
+	if (key >= this.inventory.length) {
+		throw new Error('Run out of stock!');
+	}
+	return this.inventory[key];
+};
+
+Product.prototype.populateInventory = function(itemCount) {
+	for (var i = 0; i < itemCount; i++) {
+		this.addItem({
+			_id: this._id++,
+			type: this.name,
+			sold: false
+		});
+	}
+	return this;
+};
+
+Product.prototype.printInventory = function() {
+	console.log('INVENTORY');
+	console.log(this.inventory);
+	return this;
 };
 
 Product.prototype.setOffer = function(offer) {
 	this.offer = offer;
 	console.log('Offer ' + offer.getName() + ' on ' + this.name);
-	this.soldByOffer[offer.getName()] = 0;
-};
-
-Product.prototype.stockValue = function() {
-	console.log('STOCK VALUE');
-	return this.offer.do(this, this.total);
-};
-
-Product.prototype.soldValue = function() {
-	console.log('SOLD VALUE');
-	return this.offer.do(this, this.soldByOffer[this.offer.getName()]);
+	return this;
 };
 
 Product.prototype.checkout = function(count) {
-	if (count > this.total) {
-		throw new Error('Run out of stock!');
-	}
 	console.log('PURCHASE');
-	var price = this.offer.do(this, count);
-	this.total -= count;
-	this.soldByOffer[this.offer.getName()] += count;
-	return price;
+	this.offer.do(this, count);
+	return this;
 }
 
 module.exports.Product = Product;

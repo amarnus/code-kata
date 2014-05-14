@@ -18,25 +18,38 @@ Offer.prototype.do = function() {
 };
 
 module.exports.noOffer = new Offer('no offer', function(product, count) {
-	var price = 0.0;
+	var price = 0.0, item;
 	for (var i = 0; i < count; i++) {
 		price += product.price;
+		item = product.getItem();
+		item.sold = true;
+		item.offer = this.name;
+		item.sellingPrice = myRound(product.price);
 	}
 	price = myRound(price);
 	console.log(count + ' ' + product.name + ' at $' + price);
 	return price;
 });
 
-module.exports.buy2get1Free = new Offer('buy 2 get 1 free', function(product, count) {
+module.exports.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, count) {
 	var i = count,
 		j = 0,
-		price = 0.0;
+		price = 0.0,
+		item;
 	while (i > 0) {
+		item = product.getItem();
 		if (++j > 2) {
 			j = 0;
-			continue;
+			item.sellingPrice = 0;
 		}
-		price += product.price;
+		else {
+			price += product.price;
+			item.sellingPrice = product.price;
+		}
+		item.sold = true;
+		item.offer = this.name;
+		item.offerPrice = myRound(2/3 * product.price);
+		item.originalPrice = product.price;
 		i--;
 	}
 	price = myRound(price);
@@ -48,16 +61,19 @@ module.exports.buy3For10 = new Offer('buy 3 for $10', function(product, count) {
 	var i = count,
 		j = 0,
 		price = 0.0,
-		lastPrice = 0.0;
+		item;
 	while (i > 0) {
+		item = product.getItem();
 		if (++j === 3) {
-			price = lastPrice + 10.00;
-			lastPrice = price;
-			j = 0;
+			price += (item.sellingPrice = (10 - 2 * product.price));
 		}
 		else {
-			price += product.price;
+			price += (item.sellingPrice = product.price);
 		}
+		item.offer = this.name;
+		item.sold = true;
+		item.offerPrice = myRound(10/3);
+		item.originalPrice = product.price;
 		i--;
 	}
 	price = myRound(price);

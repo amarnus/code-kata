@@ -9,25 +9,15 @@ var offer = require('./Offer.js');
 var product = require('./Product.js');
 
 function main() {
-	var chips = new product.Product('Chips', 100, 5.00);
-	var value = 0.0,
-		money = 0.0;
-
-	chips.setOffer(offer.noOffer);
-	chips.stockValue();
-
-	money += chips.checkout(10);
-	
-	value += chips.soldValue();
-	chips.setOffer(offer.buy3For10);
-	chips.stockValue();
-
-	money += chips.checkout(20);
-	money += chips.checkout(40);
-	value += chips.soldValue();
-
-	console.log('VALUE: $' + value);
-	console.log('MONEY: $' + money);
+	new product.Product('Kurkure', 6.00)
+		.populateInventory(10)
+		.setOffer(offer.noOffer)
+		.checkout(2)
+		.setOffer(offer.buy3For10)
+		.checkout(2)
+		.setOffer(offer.buy2Get1Free)
+		.checkout(6)
+		.printInventory();
 };
 
 main();
