@@ -5,8 +5,8 @@
  * Doesn't account for price by weight. Only price by cardinality.
  */
 
-var offer = require('./Offer.js');
-var product = require('./Product.js');
+var offer = require('./lib/Offer.js');
+var product = require('./lib/Product.js');
 
 function main() {
 	new product.Product('Kurkure', 6.00)
