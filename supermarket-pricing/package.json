@@ -1,0 +1,29 @@
+{
+  "name": "supermarket-pricing",
+  "version": "0.1.0",
+  "description": "An attempt to solve Ex1 of CodeKata",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:amarnus/code-kata.git"
+  },
+  "keywords": [
+    "code-kata",
+    "supermarket-pricing"
+  ],
+  "author": "Amarnath Ravikumar <amarnus@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/amarnus/code-kata/issues"
+  },
+  "homepage": "https://github.com/amarnus/code-kata",
+  "dependencies": {
+    "uuid": "~1.4.1",
+    "cli-table": "~0.3.0",
+    "node-getopt": "~0.2.3",
+    "winston": "~0.7.3"
+  }
+}

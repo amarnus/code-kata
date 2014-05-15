@@ -5,6 +5,18 @@
  * Doesn't account for price by weight. Only price by cardinality.
  */
 
+var opt = require('node-getopt').create([
+	  [''  , 'verbose', 'Verbose mode'],
+	  ['h' , 'help',  'Help']
+	])
+	.bindHelp()
+	.parseSystem();
+var winston = require('winston');
+
+if (!opt.options.debug) {
+	winston.remove(winston.transports.Console);
+}
+
 var offer = require('./lib/Offer.js');
 var product = require('./lib/Product.js');
 
