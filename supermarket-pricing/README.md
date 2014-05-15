@@ -14,7 +14,5 @@ Usage
 -----
 
     ./index.js --help
-
     ./index.js
-
     ./index.js --verbose
