@@ -69,6 +69,7 @@ Offer.buy3For10 = new Offer('buy 3 for $10', function(product, count, customer) 
 		item = product.getItem();
 		if (++j === 3) {
 			price += (item.sellingPrice = (10 - 2 * product.price));
+			j = 0;
 		}
 		else {
 			price += (item.sellingPrice = product.price);
