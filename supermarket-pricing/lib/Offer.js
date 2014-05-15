@@ -2,7 +2,7 @@
 
 var winston = require('winston');
 
-function myRound(value) {
+var round = function(value) {
 	return parseFloat(parseFloat(Math.round(value * 100) / 100).toFixed(2));
 };
 
@@ -15,7 +15,7 @@ Offer.prototype.getName = function() {
 	return this.name;
 };
 
-Offer.prototype.do = function() {
+Offer.prototype.applyOffer = function() {
 	return this.method.apply(this, arguments);
 };
 
@@ -25,10 +25,10 @@ module.exports.noOffer = new Offer('no offer', function(product, count) {
 		price += product.price;
 		item = product.getItem();
 		item.offer = this.name;
-		item.sellingPrice = myRound(product.price);
+		item.sellingPrice = round(product.price);
 		item.originalPrice = product.price;
 	}
-	price = myRound(price);
+	price = round(price);
 	winston.info(count + ' ' + product.name + ' at $' + price);
 	return price;
 });
@@ -49,11 +49,11 @@ module.exports.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, co
 			item.sellingPrice = product.price;
 		}
 		item.offer = this.name;
-		item.offerPrice = myRound(2/3 * product.price);
+		item.offerPrice = round(2/3 * product.price);
 		item.originalPrice = product.price;
 		i--;
 	}
-	price = myRound(price);
+	price = round(price);
 	winston.info(count + ' ' + product.name + ' at $' + price + ' (' + this.getName() + ')');
 	return price;
 });
@@ -72,11 +72,11 @@ module.exports.buy3For10 = new Offer('buy 3 for $10', function(product, count) {
 			price += (item.sellingPrice = product.price);
 		}
 		item.offer = this.name;
-		item.offerPrice = myRound(10/3);
+		item.offerPrice = round(10/3);
 		item.originalPrice = product.price;
 		i--;
 	}
-	price = myRound(price);
+	price = round(price);
 	winston.info(count + ' ' + product.name + ' at $' + price + ' (' + this.getName() + ')');
 	return price;
 });

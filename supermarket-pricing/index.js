@@ -6,21 +6,21 @@
  */
 
 var opt = require('node-getopt').create([
-	  [''  , 'verbose', 'Verbose mode'],
-	  ['h' , 'help',  'Help']
+		[''  , 'verbose', 'Verbose mode'],
+		['h' , 'help',  'Help']
 	])
 	.bindHelp()
 	.parseSystem();
 var winston = require('winston');
 
-if (!opt.options.debug) {
+if (!opt.options.verbose) {
 	winston.remove(winston.transports.Console);
 }
 
 var offer = require('./lib/Offer.js');
 var product = require('./lib/Product.js');
 
-function main() {
+var main = function() {
 	new product.Product('Kurkure', 6.00)
 		.populateInventory(10)
 		.setOffer(offer.noOffer)

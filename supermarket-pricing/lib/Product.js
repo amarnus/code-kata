@@ -4,12 +4,12 @@ var uuid = require('uuid');
 var Table = require('cli-table');
 var winston = require('winston');
 
-function formatPrice(price) {
+var formatPrice = function(price) {
 	if (typeof(price) !== 'undefined') {
 		return '$' + price;
 	}
 	return '-';
-}
+};
 
 var Product = function(name, price) {
 	this.name = name;
@@ -69,10 +69,11 @@ Product.prototype.setOffer = function(offer) {
 	return this;
 };
 
+// @todo This method should probably move to a Customer model.
 Product.prototype.checkout = function(count) {
 	winston.info('PURCHASE');
-	this.offer.do(this, count);
+	this.offer.applyOffer(this, count);
 	return this;
-}
+};
 
 module.exports.Product = Product;
