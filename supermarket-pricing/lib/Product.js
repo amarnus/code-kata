@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-var uuid = require('uuid');
-var Table = require('cli-table');
-var winston = require('winston');
+var uuid = require('uuid'),
+	Table = require('cli-table'),
+	winston = require('winston');
+require('colors');
 
 var formatPrice = function(price) {
 	if (typeof(price) !== 'undefined') {
@@ -45,18 +46,20 @@ Product.prototype.populateInventory = function(itemCount) {
 Product.prototype.printInventory = function() {
 	winston.info('INVENTORY');
 	var table = new Table({
-		head: [ 'Id', 'Product', 'Offer', 'Offer price', 'Selling price', 'Original price' ]
+		head: [ 'Product code', 'Customer', 'Product', 'Offer', 'Offer price', 'Selling price', 'Original price', '' ]
 	});
 	var item;
 	for (var i = 0; i < this.inventory.length; i++) {
 		item = this.inventory[i];
 		table.push([
 			item._id,
+			item.customer,
 			item.type,
 			item.offer,
 			formatPrice(item.offerPrice),
 			formatPrice(item.sellingPrice),
-			formatPrice(item.originalPrice)
+			formatPrice(item.originalPrice),
+			item.offerPrice && item.sellingPrice && (item.sellingPrice >= item.offerPrice) ? '✓'.green : ''
 		]);
 	}
 	console.info(table.toString());
@@ -69,11 +72,10 @@ Product.prototype.setOffer = function(offer) {
 	return this;
 };
 
-// @todo This method should probably move to a Customer model.
-Product.prototype.checkout = function(count) {
+Product.prototype.purchase = function(customer, count) {
 	winston.info('PURCHASE');
-	this.offer.applyOffer(this, count);
+	this.offer.applyOffer(this, count, customer);
 	return this;
 };
 
-module.exports.Product = Product;
+module.exports = Product;

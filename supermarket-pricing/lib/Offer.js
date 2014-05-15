@@ -19,7 +19,7 @@ Offer.prototype.applyOffer = function() {
 	return this.method.apply(this, arguments);
 };
 
-module.exports.noOffer = new Offer('no offer', function(product, count) {
+Offer.noOffer = new Offer('no offer', function(product, count, customer) {
 	var price = 0.0, item;
 	for (var i = 0; i < count; i++) {
 		price += product.price;
@@ -27,13 +27,14 @@ module.exports.noOffer = new Offer('no offer', function(product, count) {
 		item.offer = this.name;
 		item.sellingPrice = round(product.price);
 		item.originalPrice = product.price;
+		item.customer = customer.name;
 	}
 	price = round(price);
 	winston.info(count + ' ' + product.name + ' at $' + price);
 	return price;
 });
 
-module.exports.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, count) {
+Offer.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, count, customer) {
 	var i = count,
 		j = 0,
 		price = 0.0,
@@ -51,6 +52,7 @@ module.exports.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, co
 		item.offer = this.name;
 		item.offerPrice = round(2/3 * product.price);
 		item.originalPrice = product.price;
+		item.customer = customer.name;
 		i--;
 	}
 	price = round(price);
@@ -58,7 +60,7 @@ module.exports.buy2Get1Free = new Offer('buy 2 get 1 free', function(product, co
 	return price;
 });
 
-module.exports.buy3For10 = new Offer('buy 3 for $10', function(product, count) {
+Offer.buy3For10 = new Offer('buy 3 for $10', function(product, count, customer) {
 	var i = count,
 		j = 0,
 		price = 0.0,
@@ -74,6 +76,7 @@ module.exports.buy3For10 = new Offer('buy 3 for $10', function(product, count) {
 		item.offer = this.name;
 		item.offerPrice = round(10/3);
 		item.originalPrice = product.price;
+		item.customer = customer.name;
 		i--;
 	}
 	price = round(price);
@@ -81,4 +84,4 @@ module.exports.buy3For10 = new Offer('buy 3 for $10', function(product, count) {
 	return price;
 });
 
-module.exports.Offer = Offer;
+module.exports = Offer;
